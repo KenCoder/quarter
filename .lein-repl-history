@@ -1,0 +1,13 @@
+(in-ns 'quarter.core)
+(create-tables!)
+(defqueries "sql/shakedown.sql"
+            {:connection db-spec})
+(use 'quarter.server)
+(main)
+(-main)
+(in-ns 'quarter.server)
+(-main)
+(main)
+(use 'quarter.db)
+(drop-tables!)
+(create-tables!)
