@@ -20,9 +20,9 @@
 
 (re-frame/register-handler
   :set-count
-  (fn [db [_ gear-id add-value]]
+  (fn [db [_ gear-id new-value]]
     (-> db
-        (update-in [:gear gear-id :delta] (fn [x] (+ (or x 0) add-value)))
+        (assoc-in [:gear gear-id :delta] new-value)
         (assoc :save-status :changed))))
 
 (re-frame/register-handler
@@ -41,8 +41,6 @@
          :handler #(re-frame/dispatch [:save-success %])
          :error-handler #(re-frame/dispatch [:save-fail %])
          :format :json
-         :response-format :json
-         :keywords? true
           }
     )
     (assoc db :save-status :sent)

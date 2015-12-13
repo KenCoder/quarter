@@ -77,11 +77,12 @@
                                                 (< current-delta 0) "danger"
                                                 :else "warning")}
                               [:td
-                               [:button.btn.btn-xs {:type "button" :on-click #(re-frame/dispatch [:set-count gear_id (inc (or current-delta 0))])}
+                               [:button.btn.btn-xs {:type "button" :on-click #(re-frame/dispatch [:set-count gear_id (inc (or current-delta (- count)))])}
                                 [:span.glyphicon.glyphicon-plus {:aria-hidden "true"}]]]
                               [:td
                                [:button.btn.btn-xs {:type "button" :on-click #(re-frame/dispatch [:set-count gear_id
-                                                                                                  (max 0 (dec (or current-delta 0)))])}
+                                                                                                  (max (- count) (dec (or current-delta (- count))))])}
+
                                 [:span.glyphicon.glyphicon-minus {:aria-hidden "true"}]]
                                ]
                               [:td

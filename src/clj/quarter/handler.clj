@@ -25,9 +25,10 @@
     (let [{:keys [name site gear date]} shakedown]
       (if (and gear name site)
         (let [res (db/insert-shakedown<! {:gear (json/write-str gear) :name name :site site
-                                :date (or date (f/unparse (f/formatter "yyyy-MM-dd") (t/now)))})]
+                                          :date (or date (f/unparse (f/formatter "yyyy-MM-dd") (t/now)))})]
           (info "Insert result is " res)
-          res)
+          {:status 201
+           :headers {"Location" (str "/shakedowns/" (:id res))}})
         {:status 400
          :body (str "Invalid response: must be "
                     (json/write-str {:shakedown {:name "scout name" :site "site" :gear {:gear-id {:count -1 :notes "gear notes"}}}}))
