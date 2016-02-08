@@ -3,3 +3,8 @@
 /*-init.clj
 /resources/public/js/compiled
 .idea/
+lambda/secret.txt
+lambda.zip
+**/.DS_Store
+.lein-repl-history
+.nrepl-port

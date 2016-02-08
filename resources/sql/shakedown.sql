@@ -17,6 +17,11 @@ SELECT shakedown from shakedowns where id=:id;
 --name: get-shakedowns
 SELECT scout_name AS name, site, shake_date AS "date", gear::text FROM shakedowns ORDER BY shake_date DESC;
 
+--name: get-shakedowns-by-name-date
+SELECT scout_name AS name, site, shake_date AS "date", gear::text FROM shakedowns
+WHERE scout_name = :name AND shake_date = :date AND site = :site
+ORDER BY shake_date DESC;
+
 --name: insert-shakedown<!
 INSERT INTO shakedowns (scout_name, site, shake_date, gear) values(:name, :site, :date, :gear::jsonb);
 

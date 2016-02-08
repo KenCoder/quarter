@@ -3,6 +3,12 @@ button.btn {
     padding: 4px 4px 6px 4px;
 }
 
+/* For navbar */
+body { padding-top: 70px; }
+
 table.table {
     width: auto;
 }
+
+td.number { text-align: right;
+    }

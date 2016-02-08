@@ -4,6 +4,7 @@
             [ring.middleware.keyword-params :refer [wrap-keyword-params]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [quarter.db :as db]
+            [compojure.handler]
             [clojure.data.json :as json]
             [clj-time.core :as t]
             [clj-time.format :as f]
@@ -34,7 +35,11 @@
                     (json/write-str {:shakedown {:name "scout name" :site "site" :gear {:gear-id {:count -1 :notes "gear notes"}}}}))
          }
       )))
-  (GET "/shakedowns" [] (map #(update % :gear json/read-str) (db/get-shakedowns)))
+  (GET "/shakedowns" [name date site]
+    (info "get shakedowns '" name "'")
+      (map #(update % :gear json/read-str) (if (and name date site) (db/get-shakedowns-by-name-date {:name name :date date :site site})
+                                                                    (db/get-shakedowns))))
+
   (PUT "/shakedowns/:id" [id shakedown]
     (let [new-shake (assoc (map-keywords shakedown) :id id)]
       (if (= 0 (db/update-shakedown! new-shake))
@@ -48,7 +53,7 @@
   (GET "/" [] (file-response "index.html" {:root "resources/public"})))
 
 (defroutes base-handler
-           (-> json-handler wrap-keyword-params wrap-json-params wrap-json-response)
+           (-> json-handler compojure.handler/api wrap-keyword-params wrap-json-params wrap-json-response)
            html-handler)
 
 (def handler (wrap-reload #'base-handler))
